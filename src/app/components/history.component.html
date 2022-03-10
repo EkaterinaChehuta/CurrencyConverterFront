@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>История</title>
+</head>
+<body>
+<div class="filter-container">
+  <form (ngSubmit)="getHistoryFilter()">
+    <div>
+      <select [(ngModel)]="currencyFrom"
+              id="currencyFrom"
+              name="currencyFrom">
+        <option value="0" selected disabled></option>
+        <option *ngFor="let currencyFrom of currencies"
+                [value]="currencyFrom.id"
+                text="{{currencyFrom.charCode}} {{currencyFrom.nameCurrency}}"></option>
+      </select>
+    </div>
+    <div>
+      <select [(ngModel)]="currencyTo"
+              id="currencyTo"
+              name="currencyTo">
+        <option value="0" selected disabled></option>
+        <option *ngFor="let currencyTo of currencies"
+                [value]="currencyTo.id"
+                text="{{currencyTo.charCode}} {{currencyTo.nameCurrency}}"></option>
+      </select>
+    </div>
+    <div>
+      <input type="submit" name="get-submit" value="Показать"/>
+    </div>
+  </form>
+  <form (ngSubmit)="getHistoryAll()">
+    <input type="submit" name="get-submit" value="Показать все"/>
+  </form>
+</div>
+<div class="history-container">
+  <h1>История</h1>
+  <table border="1">
+    <tr>
+      <th>Исходная валюта</th>
+      <th>Целевая валюта</th>
+      <th>Исходная сумма</th>
+      <th>Получаемая сумма</th>
+      <th>Дата</th>
+    </tr>
+    <tr *ngFor="let history of histories">
+      <td>{{history.conversion.currencyFrom.charCode}}</td>
+      <td>{{history.conversion.currencyTo.charCode}}</td>
+      <td>{{history.conversion.amount}}</td>
+      <td>{{history.conversion.result}}</td>
+      <td>{{history.conversion.date}}</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

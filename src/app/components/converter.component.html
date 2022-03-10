@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Конвертер Валют</title>
+</head>
+<body>
+<h3>Конвертер валют</h3>
+<div class="ui-panel">
+  <form (ngSubmit)="createConversion()">
+    <label>Отдаю</label>
+    <div class="converter-input-container">
+      <select [(ngModel)]="conversion.currencyFrom"
+              id="currencyFrom"
+              name="currencyFrom"
+              required #currencyFrom="ngModel">
+        <option value="0" selected disabled></option>
+        <option *ngFor="let currencyFrom of currencies"
+                [value]="currencyFrom.id"
+                text="{{currencyFrom.charCode}} {{currencyFrom.nameCurrency}}"></option>
+      </select>
+      <input type="number" [(ngModel)]="conversion.amount"
+             id="amount" name="amount" placeholder="1"
+             required #amount="ngModel" step="any">
+    </div>
+    <label>Получаю</label>
+    <div class="converter-input-container">
+      <select [(ngModel)]="conversion.currencyTo"
+              id="currencyTo"
+              name="currencyTo"
+              required #currencyTo="ngModel">
+        <option value="0" selected disabled></option>
+        <option *ngFor="let currencyTo of currencies"
+                [value]="currencyTo.id"
+                text="{{currencyTo.charCode}} {{currencyTo.nameCurrency}}"></option>
+      </select>
+      <div *ngIf="done; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <input type="number" placeholder="{{receivedConversion.result}}">
+      </ng-template>
+      <ng-template #elseBlock>
+        <input type="number" placeholder="0" readonly>
+      </ng-template>
+    </div>
+    <input type="submit" name="convert-submit" value="Конвертировать"/>
+  </form>
+</div>
+<div class="history-container">
+  <table border="1">
+    <tr>
+      <th>Валюта</th>
+      <th>Средний курс валюты</th>
+      <th>Валюта</th>
+      <th>Средний курс валюты</th>
+      <th>Колличество конвертаций</th>
+    </tr>
+    <tr *ngFor="let statistic of statistics">
+      <td>{{statistic.currencyOne.charCode}}</td>
+      <td>{{statistic.resultCurrencyOne}}</td>
+      <td>{{statistic.currencyTwo.charCode}}</td>
+      <td>{{statistic.resultCurrencyTwo}}</td>
+      <td>{{statistic.count}}</td>
+    </tr>
+  </table>
+  <nav>
+    <a routerLink="/history"><h3>История</h3></a>
+  </nav>
+  <table border="1">
+    <tr>
+      <th>Исходная валюта</th>
+      <th>Целевая валюта</th>
+      <th>Исходная сумма</th>
+      <th>Получаемая сумма</th>
+      <th>Дата</th>
+    </tr>
+    <tr *ngFor="let conversion of conversions">
+      <td>{{conversion.currencyFrom.charCode}}</td>
+      <td>{{conversion.currencyTo.charCode}}</td>
+      <td>{{conversion.amount}}</td>
+      <td>{{conversion.result}}</td>
+      <td>{{conversion.date}}</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
